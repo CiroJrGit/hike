@@ -12,7 +12,7 @@ export default createGlobalStyle`
       -ms-transition: background-color .3s;
       transition: background-color .3s;
 
-      p, span, svg, img, input, button, ::placeholder, textarea  {
+      h1, p, span, small, svg, img, input, button, ::placeholder, textarea  {
          transition: .3s;
       }
    }

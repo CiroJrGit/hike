@@ -2,7 +2,7 @@ export default {
    title: 'dark',
 
    colors: {
-      text:                  '#E4E5EB',
+      text:                  '#DBE0F1',
       text_hover:            '#9784ff',
 
       bg_root:               '#050322',
@@ -13,7 +13,7 @@ export default {
 
 
       input_border:          '#404865',
-      placeholder:           '#575E7A',
+      placeholder:           '#6D779B',
 
       toggle:                '#9784ff',
       

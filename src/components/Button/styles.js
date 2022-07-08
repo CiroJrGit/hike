@@ -14,10 +14,11 @@ export const Container = styled.button`
    cursor: pointer;
 
    > span {
-      margin-bottom: 5px;
+      display: block;
+      margin-bottom: 2px;
    }
 
-   :hover {
+   &:hover {
       filter: brightness(1.2);
    }
 `;

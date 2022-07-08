@@ -33,11 +33,11 @@ export const Wrapper = styled.div`
 
 export const Logo = styled.div`
    margin-bottom: 55px;
-   width: 75%;
+   width: 73%;
 `;
 
 export const ImageLogo = styled.img`
-   padding-right: 24px;
+   padding-right: 12px;
    width: 100%;
 `;
 
@@ -45,6 +45,16 @@ export const Form = styled.form`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+
+   label {
+      margin: 17px 0;
+
+      span {
+         display: block;
+         margin-top: 5px;
+         color: ${props => props.theme.colors.error};
+      }
+   }
    
 	input {
 		padding: 15px 13px;
@@ -62,14 +72,4 @@ export const Form = styled.form`
          border-color: #762FE3;
       }
 	}
-
-   label {
-      margin: 17px 0;
-
-      span {
-         display: block;
-         margin-top: 5px;
-         color: ${props => props.theme.colors.error};
-      }
-   }
 `;

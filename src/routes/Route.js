@@ -16,7 +16,7 @@ function RouteWrapper({ component: Component, isPrivate, ...rest }) {
 	}
 
 	if (signed && !isPrivate) {
-		return <Redirect to='/notes' />
+		return <Redirect to='/roadmaps' />
 	}
 
 	return (

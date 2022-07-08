@@ -12,30 +12,7 @@ export const Container = styled.div`
    width: 100%;
 `;
 
-export const Wrapper = styled.div`
-   padding: 0 14px 20px;
-   
-   @media (min-width: 425px) {
-      margin-left: 73px;
-      padding: 60px 30px;
-   }
-
-   @media (min-width: 1024px) {
-      margin-left: 290px;
-      padding: 60px 120px;
-   }
-
-   @media (min-width: 1440px) {
-      margin-left: 420px;
-      padding: 60px 150px;
-   }
-`;
-
-export const Content = styled.div`
-   width: 100%; 
-`;
-
-export const Search = styled.form`
+export const SearchForm = styled.form`
    margin-bottom: 33px;
 `;
 
@@ -56,7 +33,7 @@ export const WeatherDiv = styled.div`
    background: ${props => props.theme.colors.bg_component};
    border-radius: 30px;
 
-   @media (min-width: 1370px) {
+   @media (min-width: 1580px) {
       flex-direction: row;
    }
 `;
@@ -67,7 +44,7 @@ export const WeatherData1 = styled.div`
 
    > p {
       margin-left: 10px;
-      font-size: 6rem;
+      font-size: 6.2rem;
    }
 
    > span {
@@ -77,56 +54,85 @@ export const WeatherData1 = styled.div`
 `;
 
 export const City = styled.div`
-   font-size: 2rem;
+   font-size: 2rem; //diminuir 
    color: #BBCAF3;
 `;
 
 export const WeatherData2 = styled.div`
    display: grid;
-   grid-template: repeat(3, 1fr) repeat(2, 1) / 1fr repeat(3, 0) 1fr;
+   grid-template-columns: 1fr;
+   grid-template-rows: 1fr repeat(4, 0.5fr);
+   text-align: center;
+
+   @media (min-width: 612px) {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 2fr repeat(2, 1.5fr);
+   }
 
    span {
-      margin-left: 7px;
       font-size: 1.3rem;
       color: #6D779B;
    }
 `;
 
 export const Sense = styled.div`
-   grid-area: 1 / 1 / 2 / 6;
-   margin-bottom: 24px;
-
+   grid-area: 1 / 1 / 2 / 2;
+   margin-bottom: 27px;
+   
    span {
-      font-size: 1.9rem;
+      margin-left: 8px;
+      font-size: 2rem;
+   }
+   
+   @media (min-width: 612px) {
+      grid-area: 1 / 1 / 2 / 6;
    }
 `;
 
 export const Max = styled.div`
    grid-area: 2 / 1 / 3 / 2;
-   margin-left: 7px;
-   margin-bottom: 18px;
+
+   @media (min-width: 612px) {
+      grid-area: 2 / 1 / 3 / 3;
+   }
 `;
 
 export const Humidity = styled.div`
-   grid-area: 2 / 5 / 3 / 6;
-   margin-left: 7px;
-   margin-bottom: 18px;
+   grid-area: 3 / 1 / 4 / 2;
+
+   span {
+      margin-left: 7px;
+   }
+
+   @media (min-width: 612px) {
+      grid-area: 2 / 3 / 3 / 5;
+   }
 `;
 
 export const Min = styled.div`
-   grid-area: 3 / 1 / 4 / 2;
-   margin-left: 14px;
+   grid-area: 4 / 1 / 5 / 2;
+
+   @media (min-width: 612px) {
+      grid-area: 3 / 1 / 4 / 3;
+   }
 `;
 
 export const Wind = styled.div`
-   grid-area: 3 / 5 / 4 / 6;
-   margin-left: 14px;
+   grid-area: 5 / 1 / 6 / 2;
+
+   span {
+      margin-left: 7px;
+   }
+
+   @media (min-width: 612px) {
+      grid-area: 3 / 3 / 4 / 5;
+   }
 `;
 
 export const SensIcon = styled(FaTemperatureHigh)`
    ${iconCSS};
-   width: 24px;
-   height: 24px;
+   width: 28px;
+   height: 28px;
 `;
 
 export const MaxIcon = styled(HiArrowNarrowUp)`

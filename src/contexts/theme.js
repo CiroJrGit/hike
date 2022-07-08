@@ -8,7 +8,7 @@ import dark from '../styles/themes/dark';
 export const ThemesContext = createContext({});
 
 export const AppTheme = ({children}) => {
-   const [theme, setTheme] = useState(light);
+   const [theme, setTheme] = useState(dark);
 
    const toggleTheme = () => {
       setTheme(theme.title === 'light' ? dark : light);

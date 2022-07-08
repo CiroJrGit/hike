@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { RiRoadMapLine, CgFileDocument, TiWeatherWindyCloudy, MdLogout, RiArrowDropUpLine } from '../../styles/icons';
+import { RiRoadMapLine, BsJournalText, BsChatQuote, BsClouds, MdLogout, RiArrowDownSFill, RiArrowDropUpLine } from '../../styles/icons';
 
 const flexColumnCSS = css`
    display: flex;
@@ -29,14 +29,15 @@ const iconCSS = css`
 
 
 export const Container = styled.div`
-   display: none;
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   background: ${propps => propps.theme.colors.bg_component};
    
    @media (min-width: 425px) {
-      position: fixed;
-      display: block;
       left: 0;
+      width: auto;
       height: 100%;
-      background: ${propps => propps.theme.colors.bg_component};
    }
    
    @media (min-width: 1024px) {
@@ -49,8 +50,15 @@ export const Container = styled.div`
 `;
 
 export const Wrapper = styled.div`
-   padding: 35px 5px;
-   height: 100%;
+   padding: 10px;
+   width: 100%;
+
+   @media (min-width: 425px) {
+      padding: 35px 5px;
+      width: auto;
+      height: 100%;
+
+   }
 
    @media (min-width: 1440px) {
       padding: 35px 20px;
@@ -59,68 +67,60 @@ export const Wrapper = styled.div`
 
 export const Header = styled.header`
    display: flex;
-   flex-direction: column;
+   flex-direction: row-reverse;
    justify-content: space-between;
-   height: 100%;
+   
+   @media (min-width: 425px) {
+      flex-direction: column;
+      height: 100%;
+   }
 `;
 
 export const ContentTop = styled.div`
-   ${flexColumnCSS};
+   ${flexRowCSS};
+   width: 100%;
+
+   @media (min-width: 425px) {
+      ${flexColumnCSS};
+   }
 `;
 
-// export const Logo = styled.div`
-//    margin-bottom: 24px;
-//    width: 70%;
-
-//    @media (min-width: 1024px) {
-//       margin-bottom: 44px;
-//       width: 54%;
-//    }
-
-//    @media (min-width: 1440px) {
-//       width: 55%;
-//    }
-// `;
-
-// export const ImageLogo = styled.img`
-//    display: none;
-//    object-fit: cover;
-
-//    @media (min-width: 1024px) {
-//       display: block;
-//       width: 100%;
-//    }
-// `;
-
-// export const ImageLogoMb = styled.img`
-//    display: block;
-//    margin: 0 auto;
-//    width: 70%;
-//    object-fit: cover;
-
-//    @media (min-width: 1024px) {
-//       display: none;
-//    }
-// `;
-
 export const NavMenu = styled.nav`
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   width: 100%;
+
    > a {
-      display: block;
-      margin: 11px 0;
-      padding: 15px;
+      display: inline-flex;
+      align-items: center;
       color: ${props => props.theme.colors.text};
       border-radius: 50px;
 
-      :hover {
+      &:hover {
          background: ${props => props.theme.colors.bg_item};
       }
    }
 
    > a.is-active {
       color: ${props => props.theme.colors.text_hover};
-      background: ${props => props.theme.colors.bg_item};
    }
    
+   @media (min-width: 425px) {
+      flex-direction: column;
+
+      > a {
+         display: block;
+         margin: 0 0 7px;
+         padding: 15px;
+      }
+
+      > a.is-active {
+         color: ${props => props.theme.colors.text_hover};
+         background: ${props => props.theme.colors.bg_item};
+      }
+   }
+
    @media (min-width: 1024px) {
       width: 80%;
       
@@ -140,27 +140,16 @@ export const NavItem = styled.div`
    }
    
    @media (min-width: 1024px) {
-      padding: 10px 10px 11px;
+      padding: 10px 10px;
       
       > span {
          display: inline;
          margin-bottom: 3px;
-         margin-left: 10px;
+         margin-left: 13px;
          font-size: 1.4rem;
       }
    }
 `;
-
-// export const NavMobile = styled.nav`
-//    position: fixed;
-//    display: flex;
-//    flex-direction: row;
-//    justify-content: space-around;
-//    bottom: 0;
-//    left: 0;
-//    width: 100%;
-//    z-index: 10;
-// `;
 
 export const ContentBottom = styled.div`
    ${flexColumnCSS};
@@ -168,16 +157,21 @@ export const ContentBottom = styled.div`
 
 export const DropUpMenu = styled.div`
    position: absolute;
-   bottom: 115px;
-   left: 20px;
+   bottom: 83px;
+   left: 7px;
    padding: 13px;
    width: 225px;
    background: ${props => props.theme.colors.bg_item};
    border-radius: 25px;
    
+   @media (min-width: 425px) {
+      bottom: 115px;
+   }
+   
    @media (min-width: 1024px) {
       position: inherit;
       margin-bottom: 30px;
+      left: 20px;
       width: 80%;
    }
 `;
@@ -189,7 +183,7 @@ export const ProfileDropUp = styled.div`
    border-radius: 15px;
    cursor: pointer;
 
-   :hover {
+   &:hover {
       background: ${props => props.theme.colors.bg_item_hover};
    }
 `;
@@ -242,8 +236,18 @@ export const DropUpItem = styled.label`
       font-size: 1.2rem;
    }
 
-   :hover {
+   &:hover {
       background: ${props => props.theme.colors.bg_item_hover};
+   }
+`;
+
+export const SpanDot = styled.div`
+   display: flex;
+   justify-content: flex-start;
+   width: 100%;
+
+   @media (min-width: 1024px) {
+      justify-content: center;
    }
 `;
 
@@ -301,20 +305,45 @@ export const AvatarImage = styled.img`
 
 
 export const RoadMapIcon = styled(RiRoadMapLine)`
-   ${iconCSS}
+   flex-shrink: 0;
+   width: 29px;
+   height: 29px;
 `;
 
-export const NotesIcon = styled(CgFileDocument)`
-   ${iconCSS}
+export const NotesIcon = styled(BsJournalText)`
+   flex-shrink: 0;
+   width: 28px;
+   height: 25px;
 `;
 
-export const WeatherIcon = styled(TiWeatherWindyCloudy)`
-   ${iconCSS}
+export const QuotesIcon = styled(BsChatQuote)`
+   flex-shrink: 0;
+   width: 28px;
+   height: 27px;
+`;
+
+export const WeatherIcon = styled(BsClouds)`
+   flex-shrink: 0;
+   width: 30px;
+   height: 30px;
 `;
 
 export const ExitIcon = styled(MdLogout)`
    width: 25px;
    height: 25px;
+`;
+
+export const Dot = styled(RiArrowDownSFill)`
+   position: absolute;
+   bottom: -26px;
+   width: 45px;
+   height: 45px;
+   fill: ${props => props.theme.colors.bg_item};
+   
+   
+   @media (min-width: 1024px) {
+      bottom: 114px;
+   }
 `;
 
 export const ArrowMenu = styled(RiArrowDropUpLine)`

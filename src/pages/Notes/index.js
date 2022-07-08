@@ -3,15 +3,19 @@ import { AuthContext } from '../../contexts/auth';
 import firebase from '../../services/firebaseConnection';
 import { format } from 'date-fns';
 
-import { Container, Wrapper, Content, Form, LabelButton, SpanErr, NoteList, Note, NoteContent, NoteFooter, TrashIcon } from './styles';
+import { Container, SearchForm, NoteForm, LabelButton, SpanErr, NoteList, Note, NoteContent, NoteFooter, TrashIcon } from './styles';
 
 import Navbar from '../../components/Navbar';
+import Wrapper from '../../components/Wrapper';
+import Title from '../../components/Title';
+import SearchBar from '../../components/SearchBar';
 import Button from '../../components/Button';
 
 function Notes() {
    const { user } = useContext(AuthContext);
 
    const [notes, setNotes] = useState([]);
+   const [search, setSearch] = useState('');
    // const [loading, setLoading] = useState(true);
    // const [isEmpty, setIsEmpty] = useState(false);
 
@@ -27,7 +31,8 @@ function Notes() {
 
 
    async function loadNotes() {
-      await firebase.firestore().collection('users').doc(user.uid).collection('notes').orderBy('created', 'desc') //POR ENQUANTO SEM LISTA INFINITA 
+      await firebase.firestore().collection('users')
+      .doc(user.uid).collection('notes').orderBy('created', 'desc')
       .get()
       .then((snapshot) => {
          let list = [];
@@ -62,7 +67,7 @@ function Notes() {
             created: new Date(),
          })
          .then(() => {
-            console.log('Anotação salva com sucesso!');
+            console.log('Anotação salva com sucesso.');
             setText('');
          })
          .catch((err) => {
@@ -75,84 +80,95 @@ function Notes() {
       else {
          setNullNote(true);
       }
-	};
+	}
+
 
    async function handleDeleteNote(id) {
       await firebase.firestore().collection('users')
       .doc(user.uid).collection('notes').doc(id)
       .delete()
       .then(() => {
-         console.log('Post excluído');
+         console.log('Anotação excluído.');
       })
       .catch(() => {
-         console.log('algo deu errado');
+         console.log('Algo deu errado.');
       })
 
       loadNotes();
-	};
+	}
 
-
-
-   // if (loading) {
-   //    return (
-   //       <Container>
-   //          <Navbar />
-
-   //          <Wrapper>
-   //             <Content>
-   //                <Form>
-   //                   <label>
-   //                      <p>Carregando Anotações</p>
-   //                   </label>
-   //                </Form>
-   //             </Content>
-   //          </Wrapper>
-   //       </Container>
-   //    );
-   // }
 
    return (
       <Container>
          <Navbar />
 
          <Wrapper>
-            <Content>
-               <Form onSubmit={handleAddNote}>
-                  <p>Anotação</p>
-                  <textarea
-                     value={text}
-                     onChange={ (e) => setText(e.target.value) }
-                     placeholder='Digite uma anotação...'
+            <Title title='Anotações' />
+
+            <SearchForm onSubmit={(e) => e.preventDefault()}>
+               <SearchBar>
+                  <input
+                     defaultValue={search}
+                     onChange={(e) => setSearch(e.target.value)}
+                     placeholder='Pesquisar anotação'
+                     text='text'
                   />
+               </SearchBar>
+            </SearchForm>
 
-                  <LabelButton>
-                     <Button type='submit' span={'Salvar'} />
-                     { nullNote && <SpanErr>Não é possível salvar uma anotação vazia!</SpanErr>}
-                  </LabelButton>
-               </Form>
+            <NoteForm onSubmit={handleAddNote}>
+               <p>Anotação</p>
+               <textarea
+                  defaultValue={text}
+                  onChange={ (e) => setText(e.target.value) }
+                  placeholder='Digite uma anotação...'
+               />
 
-               <NoteList>
-                  {notes.map((note, index) => (
-                     <Note key={index}>
-                        <NoteContent>
-                           <span>{note.text}</span>
-            
-                           <NoteFooter>
-                              <small>{note.createdFormated}</small>
-                              <TrashIcon
-                                 onClick={() => handleDeleteNote(note.id)}
-                                 className='delete-icon'
-                                 size='1.3em'
-                              />
-                           </NoteFooter>
-                        </NoteContent>
-                     </Note>
-                  ))}
-               </NoteList>
-            </Content>
+               <LabelButton>
+                  <Button type='submit' span={'Salvar'} />
+                  { nullNote && <SpanErr>Não é possível salvar uma anotação vazia!</SpanErr>}
+               </LabelButton>
+            </NoteForm>
+
+            <NoteList>
+               {notes.filter((note) => note.text.toLowerCase().includes(search.toLowerCase().trim())).map((note, index) => (
+                  <Note key={index}>
+                     <NoteContent>
+                        <span>{note.text}</span>
+         
+                        <NoteFooter>
+                           <small>{note.createdFormated}</small>
+                           <TrashIcon
+                              onClick={() => handleDeleteNote(note.id)}
+                              size='1.3em'
+                           />
+                        </NoteFooter>
+                     </NoteContent>
+                  </Note>
+               ))}
+            </NoteList>
          </Wrapper>
       </Container>
    );
 }
 
 export default Notes;
+
+
+// if (loading) {
+//    return (
+//       <Container>
+//          <Navbar />
+
+//          <Wrapper>
+//             <Content>
+//                <Form>
+//                   <label>
+//                      <p>Carregando Anotações</p>
+//                   </label>
+//                </Form>
+//             </Content>
+//          </Wrapper>
+//       </Container>
+//    );
+// }

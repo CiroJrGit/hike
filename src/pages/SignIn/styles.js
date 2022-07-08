@@ -32,8 +32,8 @@ export const Wrapper = styled.div`
 `;
 
 export const Logo = styled.div`
-   margin-bottom: 60px;
-   width: 75%;
+   margin-bottom: 55px; 
+   width: 73%;
 `;
 
 export const SpanErr = styled.p`
@@ -47,7 +47,7 @@ export const SpanErr = styled.p`
 `;
 
 export const ImageLogo = styled.img`
-   padding-right: 24px;
+   padding-right: 12px;
    width: 100%;
 `;
 
@@ -68,8 +68,8 @@ export const Form = styled.form`
 
 	input {
 		padding: 15px 13px;
-		font-size: 1.2rem;
       width: 100%;
+		font-size: 1.2rem;
 		color: ${props => props.theme.colors.text};
 		border: 1px ${props => props.theme.colors.input_border} solid;
       border-radius: 7px;

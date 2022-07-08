@@ -78,7 +78,7 @@ function SignUp() {
                </label>
 
                <label>
-					   <input type='text' placeholder='E-mail' value={email} onChange={(e) => setEmail(e.target.value)} />
+					   <input type='text' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
                   { emailErr && <span>E-mail inválido. Digite novamente.</span> }
                </label>
 

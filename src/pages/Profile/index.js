@@ -2,9 +2,10 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import firebase from '../../services/firebaseConnection';
 
-import { Container, Wrapper, Content, Form, User, LabelImage, LabelInput, SpanErr, InfoUser, UpLoadIcon } from './styles';
+import { Container, Content, ProfileForm, User, LabelImage, LabelInput, SpanErr, InfoUser, UpLoadIcon } from './styles';
 
 import Navbar from '../../components/Navbar';
+import Wrapper from '../../components/Wrapper';
 import Button from '../../components/Button';
 import avatar from '../../assets/avatar.png';
 
@@ -100,12 +101,12 @@ function Profile() {
    }
 
    return (
-      <Container className='oi'>
+      <Container>
          <Navbar />
 
          <Wrapper>
             <Content>
-               <Form onSubmit={handleSave}>
+               <ProfileForm onSubmit={handleSave}>
                   <User>
                      <LabelImage>
                         <span>
@@ -127,7 +128,7 @@ function Profile() {
 
                   <LabelInput>
                      <p>Nome</p>
-                     <input type='text' defaultValue={name} onChange={ (e) => setName(e.target.value) } />
+                     <input type='text' defaultValue={name} onChange={(e) => setName(e.target.value)} />
                      { nullName && <SpanErr>Você precisa de um nome para alterar.</SpanErr>}
                   </LabelInput>
 
@@ -137,9 +138,9 @@ function Profile() {
                   </LabelInput>
                   
                   <Button type='submit' span='Salvar'/>
-               </Form>
+               </ProfileForm>
             </Content>
-         </Wrapper>     
+         </Wrapper>
       </Container>
    );
 }

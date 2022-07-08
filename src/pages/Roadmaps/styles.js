@@ -9,13 +9,12 @@ export const SearchForm = styled.form`
    margin-bottom: 33px;
 `;
 
-export const NoteForm = styled.form`
+export const RoadmapForm = styled.form`
    display: flex;
    flex-direction: column;
    margin-top: 20px;
    margin-bottom: 20px;
    padding: 30px;
-   /* background: #67d7cc; */
    background: ${props => props.theme.colors.bg_component};
    border-radius: 30px;
 
@@ -73,47 +72,56 @@ export const SpanErr = styled.span`
    color: ${props => props.theme.colors.error};
 `;
 
-export const NoteList = styled.div`
+export const RoadMList = styled.div`
    display: grid;
    grid-gap: 1rem;
    
-   @media (min-width: 425px) {
-      
-   }
-   
    @media (min-width: 1024px) {
       grid-template-columns: 49.2% 49.2%;
- 
+   }
+
+   a {
+      min-height: 310px;
+      color:  ${props => props.theme.colors.text};
    }
 `;
 
-
-export const Note = styled.div`
-   min-height: 300px;
+export const Roadmap = styled.div`
+   position: relative;
    background: ${props => props.theme.colors.bg_component};
    border-radius: 30px;
+   height: 300px;
 `;
 
-export const NoteContent = styled.div`
+export const RoadmapContent = styled.div`
    display: flex;
    flex-direction: column;
    justify-content: space-between;
    padding: 27px;
    height: 100%;
 
+   p {
+      margin-bottom: 15px;
+      font-size: 1.6rem;
+      word-wrap: break-word;
+   }
+   
    span {
       display: block;
+      font-size: 1.2rem;
+      color: #6D779B;
       word-wrap: break-word;
    }
 `;
 
-export const NoteFooter = styled.div`
+export const RoadmapFooter = styled.div`
    display: flex;
-   justify-content: space-between;
-   align-items: center;
+   flex-direction: column;
 `;
 
-
 export const TrashIcon = styled(HiOutlineTrash)`
+   position: absolute;
+   right: 20px;
+   bottom: 23px;
    cursor: pointer;
 `;

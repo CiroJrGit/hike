@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { TbCameraPlus } from '../../styles/icons';
 
-
 export const Container = styled.div`
    display: flex;
    align-items: center;
@@ -12,42 +11,30 @@ export const Container = styled.div`
    }
 `;
 
-export const Wrapper = styled.div`
-   padding: 0 14px;
-   
-   @media (min-width: 425px) {
-      margin-left: 73px;
-      padding: 60px 30px 0;
-   }
-
-   @media (min-width: 1024px) {
-      margin-left: 290px;
-      padding: 60px 120px 0;
-   }
-
-   @media (min-width: 1440px) {
-      margin-left: 420px;
-      padding: 60px 150px 0;
-   }
-`;
-
 export const Content = styled.div`
-   padding: 30px 30px 30px 70px;
-   width: 100%;
+   padding: 30px 40px;
    background: ${props => props.theme.colors.bg_component};
    border-radius: 30px;
+
+   @media (min-width: 638px) {
+      padding: 30px 70px;
+   }
 `;
 
-export const Form = styled.form`
+export const ProfileForm = styled.form`
    display: flex;
    flex-direction: column;
-   width: 50%;
+   width: 100%;
 
    button {
       width: 100px;
       margin-top: 15px;
       padding: 9px 0 12px;
       font-size: 1.2rem;
+   }
+
+   @media (min-width: 1200px) {
+      width: 530px;
    }
 `;
 
@@ -85,11 +72,11 @@ export const LabelImage = styled.label`
       object-fit: cover;
    }
 
-   :hover img {
+   &:hover img {
       filter: brightness(60%)
    }
 
-   :hover span {
+   &:hover span {
       opacity: 1;
    }
 `;
@@ -127,15 +114,15 @@ export const LabelInput = styled.label`
       border: 1px ${props => props.theme.colors.input_border} solid;
       border-radius: 7px;
 
-      ::placeholder {
+      &::placeholder {
          color: ${props => props.theme.colors.placeholder};
       }
 
-      :focus {
+      &:focus {
          border-color: #762FE3;
       }
 
-      :disabled {
+      &:disabled {
          background: ${props => props.theme.colors.bg_component};
          opacity: 0.6;
       }

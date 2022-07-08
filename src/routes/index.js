@@ -1,11 +1,13 @@
 import { Switch } from 'react-router-dom';
 
 import Route from '../routes/Route';
+
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
-import Home from  '../pages/Home';
-import RoadMap from  '../pages/RoadMap';
+import Roadmaps from  '../pages/Roadmaps';
+import Roadmap from  '../pages/Roadmaps/Roadmap';
 import Notes from  '../pages/Notes';
+import Quotes from '../pages/Quotes';
 import Weather from  '../pages/Weather';
 import Profile from  '../pages/Profile';
 
@@ -15,9 +17,10 @@ function Routes() {
 			<Route exact path='/' component={SignIn} />
 			<Route exact path='/signup' component={SignUp} />
 
-			<Route exact path='/home' component={Home} isPrivate />
-			<Route exact path='/roadmaps' component={RoadMap} isPrivate />
+			<Route exact path='/roadmaps' component={Roadmaps} isPrivate />
+			<Route exact path='/roadmap/:id' component={Roadmap} isPrivate />
 			<Route exact path='/notes' component={Notes} isPrivate />
+			<Route exact path='/quotes' component={Quotes} isPrivate />
 			<Route exact path='/weather' component={Weather} isPrivate />
 			<Route exact path='/profile' component={Profile} isPrivate />
 		</Switch>

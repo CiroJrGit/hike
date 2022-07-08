@@ -1,14 +1,11 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../../contexts/auth';
+import { NavLink } from 'react-router-dom';
 
-import { Link, NavLink } from 'react-router-dom';
+import { Container, Wrapper, Header, ContentTop, NavMenu, NavItem, RoadMapIcon, NotesIcon, QuotesIcon, WeatherIcon, ContentBottom, DropUpMenu, ProfileDropUp, AvatarDropUp, NavProfile, ProfileItem, Avatar, AvatarImage, User, DropUpItem, SpanDot, Dot, ExitIcon, ArrowMenu } from './styles';
 
-import { Container, Wrapper, Header, ContentTop, NavMenu, NavItem, RoadMapIcon, NotesIcon, WeatherIcon, ContentBottom, DropUpMenu, ProfileDropUp, AvatarDropUp, NavProfile, ProfileItem, Avatar, AvatarImage, User, DropUpItem, ExitIcon, ArrowMenu } from './styles';
-import Toggle from './Toggle';
+import Toggle from '../Toggle';
 import avatar from '../../assets/avatar.png';
-// Logo, ImageLogo, ImageLogoMb,
-// import logo from '../../assets/logo.svg';
-// import logoMobile from '../../assets/logoMobile.svg';
 
 function Navbar() {
    const { user } = useContext(AuthContext);
@@ -16,12 +13,11 @@ function Navbar() {
 
    const [isOpen, setIsOpen] = useState(false);
 
-
    let menuRef = useRef();
 
    useEffect(() => {
-      let handler = (event) => {
-         if (!menuRef.current.contains(event.target)) {
+      let handler = (e) => {
+         if (!menuRef.current.contains(e.target)) {
             setIsOpen(false);
          }
       };
@@ -41,13 +37,6 @@ function Navbar() {
          <Wrapper>
             <Header>
                <ContentTop>
-                  {/* <Logo>
-                     <Link to='/home'>
-                        <ImageLogo src={logo} alt='Hike Logo'/>
-                        <ImageLogoMb src={logoMobile} alt='Hike Logo'/>
-                     </Link>
-                  </Logo> */}
-
                   <NavMenu>
                      <NavLink to='/roadmaps' activeClassName="is-active">
                         <NavItem>
@@ -63,6 +52,13 @@ function Navbar() {
                         </NavItem>
                      </NavLink>
 
+                     <NavLink to='/quotes' activeClassName="is-active">
+                        <NavItem>
+                           <QuotesIcon />
+                           <span>Frases</span>
+                        </NavItem>
+                     </NavLink>
+
                      <NavLink to='/weather' activeClassName="is-active">
                         <NavItem>
                            <WeatherIcon />
@@ -75,7 +71,7 @@ function Navbar() {
                <ContentBottom ref={menuRef}>
                   {isOpen && (
                      <DropUpMenu>
-                        <Link to='/profile'>
+                        <NavLink to='/profile' activeClassName="is-active">
                            <ProfileDropUp>
                               <AvatarDropUp>
                                  <AvatarImage src={user.avatarUrl === null ? avatar : user.avatarUrl} alt='Foto perfil Hike' />
@@ -85,7 +81,7 @@ function Navbar() {
                                  <span>Meu perfil</span>
                               </User>
                            </ProfileDropUp>
-                        </Link>
+                        </NavLink>
 
                         <DropUpItem htmlFor={Toggle}>
                            <Toggle />
@@ -96,6 +92,10 @@ function Navbar() {
                            <ExitIcon />
                            <span>Sair</span>
                         </DropUpItem>
+
+                        <SpanDot>
+                           <Dot />
+                        </SpanDot>
                      </DropUpMenu>
                   )}
 

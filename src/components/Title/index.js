@@ -1,12 +1,13 @@
 import React from 'react';
+
 import { Container } from './styles';
 
-function Button({ span }) {
+function Title({ title }) {
    return (
       <Container>
-         <span>{span}</span>
+         <h1>{title}</h1>
       </Container>
    );
 }
 
-export default Button;
+export default Title;
