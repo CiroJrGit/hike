@@ -3,26 +3,46 @@ import { AuthContext } from '../../contexts/auth';
 import firebase from '../../services/firebaseConnection';
 import { format } from 'date-fns';
 
-import { Container, SearchForm, NoteForm, LabelButton, SpanErr, NoteList, Note, NoteContent, NoteFooter, TrashIcon } from './styles';
+import { Container, SearchForm, LoadWrapper, NoteList, Note, NoteContent, NoteFooter, NoteForm, PlusIcon, NotesOffIcon, CloseIcon, EditIcon, TrashIcon } from './styles';
+import { AnimatePresence } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 import Navbar from '../../components/Navbar';
 import Wrapper from '../../components/Wrapper';
 import Title from '../../components/Title';
 import SearchBar from '../../components/SearchBar';
+import Loading from '../../components/Loading';
+import EmptyWrapper from '../../components/WrapperEmpty';
+import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 
 function Notes() {
    const { user } = useContext(AuthContext);
 
    const [notes, setNotes] = useState([]);
-   const [search, setSearch] = useState('');
-   // const [loading, setLoading] = useState(true);
-   // const [isEmpty, setIsEmpty] = useState(false);
+   const [loading, setLoading] = useState(true);
 
+   const [thisNote, setThisNote] = useState({});
+   const [title, setTitle] = useState('');
    const [text, setText] = useState('');
-   const [nullNote, setNullNote] = useState(false);
 
+   const [modalNote, setModalNote] = useState(false);
+   const [modalEditNote, setModalEditNote] = useState(false);
 
+   const [search, setSearch] = useState('');
+   const lowerSearch = search.toLowerCase();
+   const notesFiltereds = notes.filter((note) => note.text.toLowerCase().includes(lowerSearch.trim()))
+
+   const notelist = {
+      from: {opacity: 0},
+      to: {opacity: 1}
+   }
+
+   const noteitem = {
+      from: {opacity: 0 },
+      to: {opacity: 1, transition: {duration: .05}}
+   };
+   
    useEffect(() => {
       loadNotes();
 
@@ -40,6 +60,7 @@ function Notes() {
          snapshot.forEach((doc) => {
             list.push({
                id: doc.id,
+               title: doc.data().title,
                text: doc.data().text,
                created: doc.data().created,
                createdFormated: format(doc.data().created.toDate(), 'dd/MM/yyyy'),
@@ -52,34 +73,38 @@ function Notes() {
          console.log(err);
       })
 
-      // setLoading(false);
+      setLoading(false);
    }
 
 
    async function handleAddNote(e) {
       e.preventDefault();
 
-      if (text !== '') {
-         await firebase.firestore().collection('users')
-         .doc(user.uid).collection('notes')
-         .add({
-            text: text,
-            created: new Date(),
-         })
-         .then(() => {
-            console.log('Anotação salva com sucesso.');
-            setText('');
-         })
-         .catch((err) => {
-            console.log(err);
-         })
+      await firebase.firestore().collection('users')
+      .doc(user.uid).collection('notes')
+      .add({
+         title: title.trim(),
+         text: text.trim(),
+         created: new Date(),
+      })
+      .then(() => {
+         toast('Anotação criada.', {
+            position: "bottom-right",
+            autoClose: 1500,
+            hideProgressBar: true,
+            pauseOnHover: true,
+            className: 'toast-success',
+         });
+      })
+      .catch((err) => {
+         console.log(err);
+      })
 
-         setNullNote(false);
-         loadNotes();
-      }
-      else {
-         setNullNote(true);
-      }
+      setModalNote(false);
+      setTitle('');
+      setText('');
+
+      loadNotes();
 	}
 
 
@@ -88,15 +113,65 @@ function Notes() {
       .doc(user.uid).collection('notes').doc(id)
       .delete()
       .then(() => {
-         console.log('Anotação excluído.');
+         toast('Anotação excluída.', {
+            position: "bottom-right",
+            autoClose: 1500,
+            hideProgressBar: true,
+            pauseOnHover: true,
+            className: 'toast-fail',
+         });
       })
-      .catch(() => {
-         console.log('Algo deu errado.');
+      .catch((err) => {
+         console.log(err);
       })
 
       loadNotes();
 	}
 
+
+   async function handleAddEditNote(e) {
+      e.preventDefault();
+
+      await firebase.firestore().collection('users')
+      .doc(user.uid).collection('notes').doc(thisNote.id)
+      .update({
+         title: title.trim(),
+         text: text.trim()
+      })
+      .then(() => {
+         toast('Anotação editada.', {
+            position: "bottom-right",
+            autoClose: 1500,
+            hideProgressBar: true,
+            pauseOnHover: true,
+            className: 'toast-edit',
+         });
+      })
+      .catch((err) => {
+         console.log(err)
+      })
+
+      setModalEditNote(false);
+      loadNotes();
+
+   }
+
+
+   function handleToggleModalNote(e) {
+      e.preventDefault();
+
+      setModalNote(!modalNote);
+      setTitle('');
+      setText('');
+   }
+
+   function handleToggleModalEditNote(note) {
+      setModalEditNote(!modalEditNote);
+      
+      setThisNote(note);
+      setTitle(note.title);
+      setText(note.text);
+   }
 
    return (
       <Container>
@@ -105,70 +180,124 @@ function Notes() {
          <Wrapper>
             <Title title='Anotações' />
 
-            <SearchForm onSubmit={(e) => e.preventDefault()}>
+            <SearchForm onSubmit={handleToggleModalNote}>
                <SearchBar>
                   <input
+                     type='text'
                      defaultValue={search}
                      onChange={(e) => setSearch(e.target.value)}
                      placeholder='Pesquisar anotação'
-                     text='text'
                   />
                </SearchBar>
+
+               <Button type='submit' span='Criar'>
+                  <PlusIcon />
+               </Button>
             </SearchForm>
 
-            <NoteForm onSubmit={handleAddNote}>
-               <p>Anotação</p>
-               <textarea
-                  defaultValue={text}
-                  onChange={ (e) => setText(e.target.value) }
-                  placeholder='Digite uma anotação...'
-               />
+            {loading && (
+               <LoadWrapper>
+                  <Loading />
+               </LoadWrapper>
+            )}
 
-               <LabelButton>
-                  <Button type='submit' span={'Salvar'} />
-                  { nullNote && <SpanErr>Não é possível salvar uma anotação vazia!</SpanErr>}
-               </LabelButton>
-            </NoteForm>
+            {(notes.length === 0 && !loading) && (
+               <EmptyWrapper>
+                  <div>
+                     <NotesOffIcon />
+                  </div>
 
-            <NoteList>
-               {notes.filter((note) => note.text.toLowerCase().includes(search.toLowerCase().trim())).map((note, index) => (
-                  <Note key={index}>
-                     <NoteContent>
-                        <span>{note.text}</span>
-         
-                        <NoteFooter>
-                           <small>{note.createdFormated}</small>
-                           <TrashIcon
-                              onClick={() => handleDeleteNote(note.id)}
-                              size='1.3em'
-                           />
-                        </NoteFooter>
-                     </NoteContent>
-                  </Note>
-               ))}
+                  <p>Nenhuma anotação criada.</p>
+                  <span>Crie uma nova anotação e salve suas notas.</span>
+               </EmptyWrapper>
+            )}
+
+            {notesFiltereds.length === 0 && notes.length !== 0 && (
+               <EmptyWrapper>
+               <p>Nenhuma anotação encontrada.</p>
+               <span>Crie uma nova anotação ou faça outra busca.</span>
+            </EmptyWrapper>
+            )}
+
+            <NoteList
+               variants={notelist}
+               initial='from'
+               animate='to'
+            >
+               {notesFiltereds.length !== 0 && (
+                  notesFiltereds.map((note, index) => (
+                     <Note key={index} variants={noteitem}>
+                        <NoteContent>
+                           <div>
+                              <p>{note.title}</p>
+                              <span>{note.text}</span>
+                           </div>
+            
+                           <NoteFooter>
+                              <span>{note.createdFormated}</span>
+                              <EditIcon onClick={() => handleToggleModalEditNote(note)} />
+                              <TrashIcon onClick={() => handleDeleteNote(note.id)} />
+                           </NoteFooter>
+                        </NoteContent>
+                     </Note>
+                  ))
+               )}
             </NoteList>
+
+            <AnimatePresence>
+               {modalNote && (
+                  <Modal title='Nova anotação'>
+                     <CloseIcon onClick={handleToggleModalNote} />
+
+                     <NoteForm onSubmit={handleAddNote}>
+                        <input
+                           value={title}
+                           onChange={(e) => setTitle(e.target.value)}
+                           placeholder='Título da anotação'
+                        />
+                        
+                        <hr />
+
+                        <textarea
+                           value={text}
+                           onChange={(e) => setText(e.target.value)}
+                           placeholder='Digite uma anotação...'
+                        />
+                        
+                        <Button type='submit' span='Salvar' disabled={title.trim().length !== 0 ? false : true} />
+                     </NoteForm>
+                  </Modal>
+               )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+               {modalEditNote && (
+                  <Modal title='Editar anotação'>
+                     <CloseIcon onClick={handleToggleModalEditNote} />
+
+                     <NoteForm onSubmit={handleAddEditNote}>
+                        <input
+                           value={title}
+                           onChange={(e) => setTitle(e.target.value)}
+                           placeholder='Título da anotação'
+                        />
+                        
+                        <hr />
+
+                        <textarea
+                           value={text}
+                           onChange={(e) => setText(e.target.value)}
+                           placeholder='Digite uma anotação...'
+                        />
+                        
+                        <Button type='submit' span='Salvar' disabled={title ? false : true} />
+                     </NoteForm>
+                  </Modal>
+               )}
+            </AnimatePresence>
          </Wrapper>
       </Container>
    );
 }
 
 export default Notes;
-
-
-// if (loading) {
-//    return (
-//       <Container>
-//          <Navbar />
-
-//          <Wrapper>
-//             <Content>
-//                <Form>
-//                   <label>
-//                      <p>Carregando Anotações</p>
-//                   </label>
-//                </Form>
-//             </Content>
-//          </Wrapper>
-//       </Container>
-//    );
-// }

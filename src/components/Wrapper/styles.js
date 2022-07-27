@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-   padding: 20px 8px;
+   position: relative;
+   padding: 20px 8px 65px;
    
    @media (min-width: 425px) {
       margin-left: 73px;
@@ -16,6 +17,11 @@ export const Container = styled.div`
    @media (min-width: 1440px) {
       margin-left: 420px;
       padding: 60px 150px;
+   }
+
+   @media (min-width: 1722px) {
+      margin-left: 420px;
+      padding: 60px 187px;
    }
 `;
 

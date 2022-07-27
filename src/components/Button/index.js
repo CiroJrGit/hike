@@ -1,9 +1,11 @@
 import React from 'react';
 import { Container } from './styles';
 
-function Button({ span }) {
+function Button({ children, span, disabled }) {
    return (
-      <Container>
+      <Container disabled={disabled}>
+         {children}
+
          <span>{span}</span>
       </Container>
    );

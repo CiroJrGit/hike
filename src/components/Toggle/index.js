@@ -22,7 +22,7 @@ function Toggle() {
             handleDiameter={17}
             offColor={colors.toggle}
             onColor={colors.toggle}
-            activeBoxShadow={colors.text}
+            activeBoxShadow={colors.primary_font}
          />
       </>
    );

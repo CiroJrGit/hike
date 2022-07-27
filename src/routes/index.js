@@ -7,8 +7,6 @@ import SignUp from '../pages/SignUp';
 import Roadmaps from  '../pages/Roadmaps';
 import Roadmap from  '../pages/Roadmaps/Roadmap';
 import Notes from  '../pages/Notes';
-import Quotes from '../pages/Quotes';
-import Weather from  '../pages/Weather';
 import Profile from  '../pages/Profile';
 
 function Routes() {
@@ -20,8 +18,6 @@ function Routes() {
 			<Route exact path='/roadmaps' component={Roadmaps} isPrivate />
 			<Route exact path='/roadmap/:id' component={Roadmap} isPrivate />
 			<Route exact path='/notes' component={Notes} isPrivate />
-			<Route exact path='/quotes' component={Quotes} isPrivate />
-			<Route exact path='/weather' component={Weather} isPrivate />
 			<Route exact path='/profile' component={Profile} isPrivate />
 		</Switch>
 	);

@@ -4,13 +4,13 @@ import 'firebase/compat/storage';
 import 'firebase/compat/auth';  
 
 const firebaseConfig = {
-   apiKey: "AIzaSyDu7AJ34FA7UkF1Mn-UpVvk-GVQz6pE-Mw",
-   authDomain: "hike-1ff89.firebaseapp.com",
-   projectId: "hike-1ff89",
-   storageBucket: "hike-1ff89.appspot.com",
-   messagingSenderId: "686181260333",
-   appId: "1:686181260333:web:e77b01c44e3113f1a0aca4",
-   measurementId: "G-KNW69Y6WPY"
+   apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,
+   authDomain: `${process.env.REACT_APP_FIREBASE_AUTH_DOMAIN}`,
+   projectId: `${process.env.REACT_APP_FIREBASE_PROJECT_ID}`,
+   storageBucket: `${process.env.REACT_APP_FIREBASE_STORAGE_BUCKET}`,
+   messagingSenderId: `${process.env.REACT_APP_FIREBASE_MESSAGIN_SENDER_ID}`,
+   appId: `${process.env.REACT_APP_FIREBASE_API_ID}`,
+   measurementId: `${process.env.REACT_APP_FIREBASE_MEASUREMENT_ID}`
 };
 
   

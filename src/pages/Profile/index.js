@@ -2,10 +2,13 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import firebase from '../../services/firebaseConnection';
 
-import { Container, Content, ProfileForm, User, LabelImage, LabelInput, SpanErr, InfoUser, UpLoadIcon } from './styles';
+import { Container, Content, ProfileForm, User, LabelImage, InfoUser, UpLoadIcon } from './styles';
+import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 import Navbar from '../../components/Navbar';
 import Wrapper from '../../components/Wrapper';
+import InputWrapper from '../../components/WrapperInput';
 import Button from '../../components/Button';
 import avatar from '../../assets/avatar.png';
 
@@ -18,7 +21,12 @@ function Profile() {
    const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
    const [imageAvatar, setImageAvatar] = useState(null)
 
-   const [nullName, setNullname] = useState(false);
+   const [nameErr, setNameErr] = useState(false);
+
+   const err = {
+      from: {y: -10, opacity: 0, delay: 0},
+      to: {y: 0, opacity: 1, transition: { duration: 0}}
+   }
 
 
    function handleFile(e) {
@@ -66,6 +74,14 @@ function Profile() {
 
                setUser(data);
                storageUser(data);
+
+               toast('Alterações salvas.', {
+                  position: "bottom-right",
+                  autoClose: 1500,
+                  hideProgressBar: true,
+                  pauseOnHover: true,
+                  className: 'toast-success',
+               });
             })
          })
       })
@@ -75,7 +91,7 @@ function Profile() {
       e.preventDefault();
       
       if (name === '') {
-         setNullname(true);
+         setNameErr(true);
       }
       else if (imageAvatar === null && name !== '') {
          await firebase.firestore().collection('users')
@@ -91,7 +107,15 @@ function Profile() {
 
             setUser(data);
             storageUser(data);
-            setNullname(false);
+            setNameErr(false);
+
+            toast('Alterações salvas.', {
+               position: "bottom-right",
+               autoClose: 1500,
+               hideProgressBar: true,
+               pauseOnHover: true,
+               className: 'toast-success',
+            });
          })
          .catch()
       }
@@ -108,13 +132,16 @@ function Profile() {
             <Content>
                <ProfileForm onSubmit={handleSave}>
                   <User>
-                     <LabelImage>
-                        <span>
-                           <UpLoadIcon />
-                        </span>
+                     <LabelImage htmlFor='image'>
+                        <UpLoadIcon />
 
-                        <input type='file' accept='image/*' onChange={handleFile} />
-                        { avatarUrl === null
+                        <input
+                           type='file'
+                           onChange={handleFile}
+                           accept='image/*'
+                           id='image'
+                        />
+                        {avatarUrl === null
                            ? <img src={avatar} alt='Foto de perfil de usuario Hike' />
                            : <img src={avatarUrl} alt='Foto de perfil de usuario Hike' />
                         }
@@ -126,17 +153,38 @@ function Profile() {
                      </InfoUser>
                   </User>   
 
-                  <LabelInput>
-                     <p>Nome</p>
-                     <input type='text' defaultValue={name} onChange={(e) => setName(e.target.value)} />
-                     { nullName && <SpanErr>Você precisa de um nome para alterar.</SpanErr>}
-                  </LabelInput>
+                  <InputWrapper>
+                     <input
+                        type='text'
+                        defaultValue={name}
+                        onChange={(e) => setName(e.target.value)}
+                        autoComplete='off'
+                        placeholder='Nome'
+                        id='name'
+                        className={nameErr ? 'classErr' : null}
+                     />
+                     <label htmlFor='name'>Nome</label>
 
-                  <LabelInput>
-                     <p>Email</p>
-                     <input type='text' defaultValue={email} disabled />
-                  </LabelInput>
-                  
+                     {nameErr &&
+                        <motion.span
+                           variants={err}
+                           initial='from'
+                           animate='to'
+                        >
+                           Nome obrigatório
+                        </motion.span>
+                     }
+                  </InputWrapper>
+                  <br />
+                  <InputWrapper>
+                     <input
+                        type='text'
+                        defaultValue={email}
+                        id='email'
+                        disabled
+                     />
+                     <label htmlFor='email'>Email</label>
+                  </InputWrapper>
                   <Button type='submit' span='Salvar'/>
                </ProfileForm>
             </Content>

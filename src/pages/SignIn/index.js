@@ -2,9 +2,12 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
 
-import { Container, Wrapper, Logo, SpanErr, ImageLogo, Form } from './styles';
-import Button from '../../components/Button';
+import { Container, Wrapper, Logo, SpanErr, ImageLogo, Form, LoadWrapper } from './styles';
+import { motion } from 'framer-motion';
+import Loading from '../../components/Loading';
 import logo from '../../assets/logo.svg';
+import InputWrapper from '../../components/WrapperInput';
+import Button from '../../components/Button';
 
 function SignIn() {
 	const [email, setEmail] = useState('');
@@ -13,7 +16,17 @@ function SignIn() {
    const [emailErr, setEmailErr] = useState(false);
 	const [passwordErr, setPasswordErr] = useState(false);
 
-   const { signIn, access, setAccess } = useContext(AuthContext);
+   const { signIn, loadingAuth, access, setAccess } = useContext(AuthContext);
+
+   const err = {
+      from: {y: -10, opacity: 0, delay: 0},
+      to: {y: 0, opacity: 1, transition: {duration: 0}}
+   }
+
+   const load = {
+      from: {opacity: 0},
+      to: {opacity: 1, transition: {duration: .3}}
+   }
 
    let validate = false;
 
@@ -25,7 +38,6 @@ function SignIn() {
    }, [])
 
    function validadeSignIn() {
-      setAccess(false);
 
       if (email === '') {
          setEmailErr(true);
@@ -58,6 +70,7 @@ function SignIn() {
       }
    }
 
+   
    return (
 		<Container>
 	  		<Wrapper>
@@ -65,23 +78,69 @@ function SignIn() {
                <ImageLogo src={logo} alt='Hike Logo'/>
             </Logo>
 
-            { access && <SpanErr>Email ou senha incorretos. Tente novamente.</SpanErr> }
+            {access && <SpanErr>Email ou senha incorretos. Tente novamente.</SpanErr>}
 
 				<Form onSubmit={handleSubmit}>
-               <label>
-					   <input type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-                  { emailErr && <span>Preencha com seu email.</span> }
-               </label>
+               <InputWrapper>
+                  <input
+                     type='text'
+                     onChange={(e) => setEmail(e.target.value)}
+                     autoComplete='off'
+                     placeholder='Email'
+                     id='email'
+                     className={emailErr ? 'classErr' : null}
+                  />
+                  <label htmlFor='email'>Email</label>
 
-               <label>
-					   <input type='password'placeholder='Senha' onChange={(e) => setPassword(e.target.value)} />
-                  { passwordErr && <span>Preencha com sua senha.</span> }
-               </label>
-					<Button type='submit' span='Entrar'/>
+                  {emailErr &&
+                     <motion.span
+                        variants={err}
+                        initial='from'
+                        animate='to'
+                     >
+                        Preencha com seu email.
+                     </motion.span>
+                  }
+               </InputWrapper>
+
+               <InputWrapper>
+					   <input
+                     type='password'
+                     onChange={(e) => setPassword(e.target.value)}
+                     autoComplete='off'
+                     placeholder='Password'
+                     id='password'
+                     className={passwordErr ? 'classErr' : null}
+                  />
+                  <label htmlFor='password'>Senha</label>
+
+                  {passwordErr &&
+                     <motion.span
+                        variants={err}
+                        initial='from'
+                        animate='to'
+                     >
+                        Preencha com sua senha.
+                     </motion.span>
+                  }
+               </InputWrapper>
+
+					<Button type='submit' span='Entrar' />
 				</Form>
 
 				<Link to='/signup'>Criar uma conta</Link>
 			</Wrapper>
+
+         {loadingAuth && (
+            <LoadWrapper
+               variants={load}
+               initial='from'
+               animate='to'
+            >
+               <Loading />
+               <span>Entrando</span>
+            </LoadWrapper>
+         )}
 		</Container>
   );
 }

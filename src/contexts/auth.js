@@ -12,7 +12,7 @@ function AuthProvider({ children }) {
 
    useEffect(() => {
       function loadStorage() {
-         const storageUser = localStorage.getItem('UserSystem');
+         const storageUser = localStorage.getItem('Hike-UserSystem');
 
          if (storageUser) {
             setUser(JSON.parse(storageUser));
@@ -24,14 +24,21 @@ function AuthProvider({ children }) {
 
       loadStorage();
 
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
+
+
+   //Delay de promisse
+   function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+   }
 
 
    //Logando usuario
    async function signIn(email, password) {
       setLoadingAuth(true);
-      setAccess(false);
 
+      await delay(800);
       await firebase.auth().signInWithEmailAndPassword(email, password)
       .then(async (value) => {
          let uid = value.user.uid;
@@ -63,6 +70,7 @@ function AuthProvider({ children }) {
    async function signUp(name, email, password) {
       setLoadingAuth(true);
 
+      await delay(740);
       await firebase.auth().createUserWithEmailAndPassword(email, password)
       .then( async (value) => {
          let uid = value.user.uid;
@@ -91,9 +99,9 @@ function AuthProvider({ children }) {
       })
    }
 
-
+   //Salvando localStorage
    function storageUser(data) {
-      localStorage.setItem('UserSystem', JSON.stringify(data));
+      localStorage.setItem('Hike-UserSystem', JSON.stringify(data));
    }
 
    
@@ -101,7 +109,7 @@ function AuthProvider({ children }) {
    async function signOut() {
       await firebase.auth().signOut();
 
-      localStorage.removeItem('UserSystem');
+      localStorage.removeItem('Hike-UserSystem');
       setUser(null);
    }
 
@@ -112,6 +120,7 @@ function AuthProvider({ children }) {
             user,
             loading,
             access,
+            loadingAuth,
             signIn,
             signUp,
             signOut,

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 export const Container = styled.div`
 	display: flex;
@@ -16,8 +17,8 @@ export const Wrapper = styled.div`
 	padding: 40px;
 	width: 100%;
    height: 100vh;
-	background: ${props => props.theme.colors.bg_root};
-	border-radius: 25px;
+	background: ${props => props.theme.colors.primary};
+	border-radius: 0;
 
 	> a {
 		font-size: 1.1rem;
@@ -27,16 +28,26 @@ export const Wrapper = styled.div`
    @media (min-width: 600px) {
 	   padding: 0 77px;
       height: 640px;
-      background: ${props => props.theme.colors.bg_component};
+	   border-radius: 25px;
    }
 `;
 
 export const Logo = styled.div`
-   margin-bottom: 55px; 
-   width: 73%;
+   margin-bottom: 50px; 
+   width: 85%;
+
+   @media (min-width: 590px) {
+      width: 73%;
+   }
+`;
+
+export const ImageLogo = styled.img`
+   padding-right: 36px;
+   width: 100%;
 `;
 
 export const SpanErr = styled.p`
+   margin-bottom: 5px;
    padding: 10px 30px 11px;
    width: 100%;
    font-size: 1.1rem;
@@ -46,40 +57,27 @@ export const SpanErr = styled.p`
    border-radius: 3px;
 `;
 
-export const ImageLogo = styled.img`
-   padding-right: 12px;
-   width: 100%;
-`;
-
 export const Form = styled.form`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+`;
 
-   label {
-      margin: 21px 0;
+export const LoadWrapper = styled(motion.div)`
+   position: absolute;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+   height: 100%;
+   font-size: 4.5rem;
+   background: ${props => props.theme.colors.secondary};
+   z-index: 2;
 
-      span {
-         display: block;
-         margin-top: 5px;
-         color: ${props => props.theme.colors.error};
-      }
+   span {
+      margin-top: 15px;
+      font-size: 1.4rem;
+      color: ${props => props.theme.colors.active_font};
    }
-
-	input {
-		padding: 15px 13px;
-      width: 100%;
-		font-size: 1.2rem;
-		color: ${props => props.theme.colors.text};
-		border: 1px ${props => props.theme.colors.input_border} solid;
-      border-radius: 7px;
-
-      ::placeholder {
-         color: ${props => props.theme.colors.placeholder};
-      }
-
-      :focus {
-         border-color: #762FE3;
-      }
-	}
 `;

@@ -4,9 +4,12 @@ import { AuthContext } from '../../contexts/auth';
 
 import { validateEmail, validatePassword } from '../../utils/regex';
 
-import { Container, Wrapper, Logo, ImageLogo, Form } from './styles';
-import Button from '../../components/Button';
+import { Container, Wrapper, Logo, ImageLogo, Form, LoadWrapper } from './styles';
+import { motion } from 'framer-motion';
+import Loading from '../../components/Loading';
 import logo from '../../assets/logo.svg';
+import InputWrapper from '../../components/WrapperInput';
+import Button from '../../components/Button';
 
 function SignUp() {
    const [name, setName] = useState('');
@@ -17,13 +20,26 @@ function SignUp() {
    const [emailErr, setEmailErr] = useState(false);
 	const [passwordErr, setPasswordErr] = useState(false);
 
-   const { signUp } = useContext(AuthContext);
+   const { signUp, loadingAuth } = useContext(AuthContext);
+
+   const err = {
+      from: {y: -10, opacity: 0, delay: 0},
+      to: {y: 0, opacity: 1, transition: { duration: 0}}
+   }
+
+   const load = {
+      from: {opacity: 0},
+      to: {opacity: 1, transition: {duration: .3}}
+   }
 
    let validate = false;
 
    
    function validadeSignUp() {
       if (name === '') {
+         setPasswordErr(false);
+         setEmailErr(false);
+
          setNameErr(true);
          validate = false;
          return;
@@ -63,6 +79,7 @@ function SignUp() {
          signUp(name, email, password);
       }
    }
+   
 
    return (
 		<Container>
@@ -72,26 +89,91 @@ function SignUp() {
             </Logo>
 
 				<Form onSubmit={handleSubmit}>
-               <label>
-					   <input type='text'placeholder='Nome' value={name} onChange={(e) => setName(e.target.value)} />
-                  { nameErr && <span>Campo Nome obrigatório</span> }
-               </label>
+               <InputWrapper>
+					   <input
+                     type='text'
+                     // defaultValue={name}
+                     onChange={(e) => setName(e.target.value)}
+                     autoComplete='off'
+                     placeholder='Nome'
+                     id='name'
+                     className={nameErr ? 'classErr' : null}
+                  />
+                  <label htmlFor='name'>Nome</label>
 
-               <label>
-					   <input type='text' placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
-                  { emailErr && <span>E-mail inválido. Digite novamente.</span> }
-               </label>
+                  {nameErr &&
+                     <motion.span
+                        variants={err}
+                        initial='from'
+                        animate='to'
+                     >
+                        Campo Nome obrigatório
+                     </motion.span>
+                  }
+               </InputWrapper>
+               
+               <InputWrapper>
+					   <input
+                     type='text'
+                     // defaultValue={email}
+                     onChange={(e) => setEmail(e.target.value)}
+                     autoComplete='off'
+                     placeholder='Email'
+                     id='email'
+                     className={emailErr ? 'classErr' : null}
+                  />
+                  <label htmlFor='email'>Email</label>
 
-               <label>
-					   <input type='password' placeholder='Senha' value={password} onChange={(e) => setPassword(e.target.value)} />
-                  { passwordErr && <span>A senha deve conter no mínimo 8 caracteres e uma letra.</span> }
-               </label>
+                  {emailErr &&
+                     <motion.span
+                        variants={err}
+                        initial='from'
+                        animate='to'
+                     >
+                        E-mail inválido. Digite novamente.
+                     </motion.span>
+                  }
+               </InputWrapper>
+               
+               <InputWrapper>
+					   <input
+                     type='password'
+                     // defaultValue={password}
+                     onChange={(e) => setPassword(e.target.value)}
+                     autoComplete='off'
+                     placeholder='Senha'
+                     id='password'
+                     className={passwordErr ? 'classErr' : null}
+                  />
+                  <label htmlFor='password'>Senha</label>
+                  
+                  {passwordErr &&
+                     <motion.span
+                        variants={err}
+                        initial='from'
+                        animate='to'
+                     >
+                        A senha deve conter no mínimo 8 caracteres e uma letra.
+                     </motion.span>
+                  }
+               </InputWrapper>
 
 					<Button type='submit' span='Criar conta'/>
 				</Form>
 
 				<Link to='/'>Entrar</Link>
 			</Wrapper>
+         
+         {loadingAuth && (
+            <LoadWrapper
+               variants={load}
+               initial='from'
+               animate='to'
+            >
+               <Loading />
+               <span>Criando</span>
+            </LoadWrapper>
+         )}
 		</Container>
   );
 }

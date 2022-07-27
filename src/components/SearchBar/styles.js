@@ -10,36 +10,34 @@ export const LabelSearch = styled.label`
    flex-direction: row-reverse;
    align-items: center;
    padding: 0 25px;
-   background: ${props => props.theme.colors.bg_component};
+   background: ${props => props.theme.colors.primary};
    border-radius: 50px;
    outline: 0;
-
-   svg {
-      margin-right: 13px;
-      width: 23px;
-      height: 23px;
-      fill: #6D779B;
-   }
 
    input {
       margin-bottom: 4px;
       width: 100%;
-      height: 55px;
+      height: 50px;
       font-size: 1.2rem;
-      color: ${props => props.theme.colors.text};
+      color: ${props => props.theme.colors.primary_font};
 
       &::placeholder {
-         color: #6D779B;
+         color: ${props => props.theme.colors.secondary_font};
       }
 
       &:focus, &:focus + svg {
-         fill: ${props => props.theme.colors.text_hover};
+         fill: ${props => props.theme.colors.active_font};
 
          &::placeholder {
-            color: ${props => props.theme.colors.text_hover};
+            color: ${props => props.theme.colors.active_font};
          }
       }
    }
 `;
 
-export const SearchIcon = styled(RiSearchLine)``;
+export const SearchIcon = styled(RiSearchLine)`
+   margin-right: 13px;
+   width: 23px;
+   height: 23px;
+   fill: ${props => props.theme.colors.secondary_font};
+`;

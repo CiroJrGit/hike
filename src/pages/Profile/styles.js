@@ -5,19 +5,22 @@ export const Container = styled.div`
    display: flex;
    align-items: center;
    width: 100%;
-
+   
    @media (min-width: 425px) {
       display: block;
    }
 `;
 
 export const Content = styled.div`
-   padding: 30px 40px;
-   background: ${props => props.theme.colors.bg_component};
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 30px;
+   background: ${props => props.theme.colors.primary};
    border-radius: 30px;
 
    @media (min-width: 638px) {
-      padding: 30px 70px;
+      padding: 35px 70px;
    }
 `;
 
@@ -27,39 +30,49 @@ export const ProfileForm = styled.form`
    width: 100%;
 
    button {
-      width: 100px;
-      margin-top: 15px;
-      padding: 9px 0 12px;
-      font-size: 1.2rem;
+      margin-top: 25px;
+      margin-bottom: 0;
+      padding: 0 19px;
+      height: 50px;
+      font-size: 1.1rem;
    }
 
    @media (min-width: 1200px) {
-      width: 530px;
+      width: 430px;
    }
 `;
 
 export const User = styled.div`
    display: flex;
+   flex-direction: column;
    align-items: center;
-   padding-bottom: 60px;
+   padding-bottom: 45px;
 `;
 
 export const LabelImage = styled.label`
+   position: relative;
    display: flex;
    flex-direction: column;
    justify-content: center;
    align-items: center;
-   width: 180px;
-   height: 180px;
+   margin-bottom: 25px;
+   width: 210px;
+   height: 210px;
    border-radius: 100%;
-   overflow: hidden;
    cursor: pointer;
 
-   > span {
+   > svg {
       position: absolute;
-      color: #f8f8f8;
-      opacity: 0.7;
-      z-index: 99;
+      right: 10px;
+      bottom: 5px;
+      padding: 7px;
+      width: 45px;
+      height: 45px;
+      color: ${props => props.theme.colors.text};
+      background: ${props => props.theme.colors.primary_item};
+      border-radius: 50px;
+      transition: background-color .3s;
+      z-index: 10;
    }
 
    > input {
@@ -73,71 +86,31 @@ export const LabelImage = styled.label`
    }
 
    &:hover img {
-      filter: brightness(60%)
+      box-shadow: 0px 12px 10px -8px rgba(0,0,0,0.45);
    }
 
-   &:hover span {
-      opacity: 1;
+   &:hover svg {
+      background: ${props => props.theme.colors.secondary_item};
    }
 `;
 
-export const InfoUser = styled.span`
-   margin-left: 23px;
+export const InfoUser = styled.div`
+   text-align: center;
 
-   > p {
+   p {
+      margin-bottom: 4px;
       font-size: 1.5rem;
       font-weight: 500;
-      transition: .0s;
    }
 
-   > span {
+   span {
       font-size: 1.2rem;
-      color: #777A90;
-      transition: .0s;
+      color: ${props => props.theme.colors.secondary_font};
    }
 `;
-
-export const LabelInput = styled.label`
-   margin-bottom: 50px;
-
-   > p {
-      padding-bottom: 13px;
-      font-size: 1.1rem;
-   }
-
-   > input {
-      margin-bottom: 3px;
-      padding: 10px 13px 12px;
-      width: 100%;
-      font-size: 1.2rem;
-      color: #777A90;
-      border: 1px ${props => props.theme.colors.input_border} solid;
-      border-radius: 7px;
-
-      &::placeholder {
-         color: ${props => props.theme.colors.placeholder};
-      }
-
-      &:focus {
-         border-color: #762FE3;
-      }
-
-      &:disabled {
-         background: ${props => props.theme.colors.bg_component};
-         opacity: 0.6;
-      }
-   }
-`;
-
-export const SpanErr = styled.span`
-   padding-bottom: 10px;
-   font-size: 1.05rem;
-   font-weight: 500;
-   color: ${props => props.theme.colors.error};
-`;
-
 
 export const UpLoadIcon = styled(TbCameraPlus)`
-   width: 50px;
-   height: 50px;
+   &:hover {
+      background: ${props => props.theme.colors.secondary_item};
+   }
 `;
