@@ -42,7 +42,7 @@ function Map({handleAddPlace, lat, lng}) {
          <SearchWrapper>
             <span>Encontre e adicione lugares</span>
 
-            <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged} options={{types: ["locality", "country"]}}>
+            <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged} >
                <SearchBar>
                   <input
                      type='text'

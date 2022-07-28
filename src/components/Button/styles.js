@@ -18,7 +18,13 @@ export const Container = styled.button`
 
    > span {
       display: inline-block;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
+
+      svg {
+         margin-top: 3px;
+         color: #fff;
+         font-size: 1.6rem;
+      }
    }
 
    &:hover {

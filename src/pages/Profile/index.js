@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import Navbar from '../../components/Navbar';
 import Wrapper from '../../components/Wrapper';
 import InputWrapper from '../../components/WrapperInput';
+import Loading from '../../components/Loading';
 import Button from '../../components/Button';
 import avatar from '../../assets/avatar.png';
 
@@ -21,6 +22,7 @@ function Profile() {
    const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl);
    const [imageAvatar, setImageAvatar] = useState(null)
 
+   const [loading, setLoading] = useState(false);
    const [nameErr, setNameErr] = useState(false);
 
    const err = {
@@ -46,6 +48,7 @@ function Profile() {
    }
 
    async function handleUpload() {
+      setLoading(true);
       const currentUid = user.uid;
 
       const uploadTask = await firebase.storage()
@@ -74,6 +77,7 @@ function Profile() {
 
                setUser(data);
                storageUser(data);
+               setLoading(false);
 
                toast('Alterações salvas.', {
                   position: "bottom-right",
@@ -84,11 +88,15 @@ function Profile() {
                });
             })
          })
+         .catch((err) => {
+            console.log(err);
+         })
       })
    }
 
    async function handleSave(e) {
       e.preventDefault();
+      setLoading(true);
       
       if (name === '') {
          setNameErr(true);
@@ -108,6 +116,7 @@ function Profile() {
             setUser(data);
             storageUser(data);
             setNameErr(false);
+            setLoading(false);
 
             toast('Alterações salvas.', {
                position: "bottom-right",
@@ -117,7 +126,9 @@ function Profile() {
                className: 'toast-success',
             });
          })
-         .catch()
+         .catch((err) => {
+            console.log(err);
+         })
       }
       else if (name !== '' && imageAvatar !== null) {
          handleUpload();
@@ -185,7 +196,7 @@ function Profile() {
                      />
                      <label htmlFor='email'>Email</label>
                   </InputWrapper>
-                  <Button type='submit' span='Salvar'/>
+                  <Button type='submit' span={loading ? <Loading /> : 'Salvar'} />
                </ProfileForm>
             </Content>
          </Wrapper>
