@@ -23,6 +23,10 @@ export const Wrapper = styled.div`
 	> a {
 		font-size: 1.1rem;
       color: #762FE3;
+      
+      &:hover {
+         text-decoration: underline;
+      }
 	}
 
    @media (min-width: 600px) {
