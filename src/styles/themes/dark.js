@@ -3,7 +3,7 @@ const dark = {
 
    colors: {
       primary_font:          '#DBE0F1', //text
-      secondary_font:        '#6D779B', //placeholder
+      secondary_font:        '#6D779B', //placeholder 7c87ab
       tertiary_font:         '#BBCAF3',
       active_font:           '#9784ff', //text_hover
 
